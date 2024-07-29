@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AJCFinal.DAL.Entites
 {
-    public class User
+    public abstract class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
         [Required]
