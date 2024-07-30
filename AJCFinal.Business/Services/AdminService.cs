@@ -27,18 +27,21 @@ namespace AJCFinal.Business.Services
             return await this.dbContext.Admins.Select(x => x.ToDto()).ToListAsync();
 
         }
-        public async Task<long> UpdateAdminAsync(AdminDto adminDto)
+        public async Task<long> UpdateAdminAsync(PersonDto personDto)
         {
-            var adminFound = await this.dbContext.Admins.FindAsync(adminDto.Id);
+            var adminFound = await this.dbContext.Admins.FindAsync(personDto.Id);
             if (adminFound is null)
                 return -1;
 
-            adminFound.Email = adminDto.Email;
-            adminFound.HashedPassword = adminDto.HashedPassword;
-            adminFound.LastName = adminDto.LastName;
-            adminFound.FirstName = adminDto.FirstName;
-            adminFound.DateOfBirth = adminDto.DateOfBirth;
-
+            adminFound.Email = personDto.Email;
+            adminFound.HashedPassword = personDto.HashedPassword;
+            adminFound.LastName = personDto.LastName;
+            adminFound.FirstName = personDto.FirstName;
+            adminFound.DateOfBirth = personDto.DateOfBirth;
+            adminFound.Address = personDto.Address;
+            adminFound.Phone = personDto.Phone;
+            adminFound.Interests = personDto.Interests;
+          
             this.dbContext.Admins.Update(adminFound);
             var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
 
@@ -118,20 +121,6 @@ namespace AJCFinal.Business.Services
             return -1; 
         }
 
-        //private void HashedPassWord(string passWord)
-        //{
-        //    byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
-        //    Console.WriteLine($"Salt: {Convert.ToBase64String(salt)}");
-
-        //    // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
-        //    string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-        //        password: passWord!,
-        //        salt: salt,
-        //        prf: KeyDerivationPrf.HMACSHA256,
-        //        iterationCount: 100000,
-        //        numBytesRequested: 256 / 8));
-        //}
-
-      
+     
     }
 }

@@ -9,6 +9,7 @@ namespace AJCFinal.Business.Abstractions
         Task<long> UpdatePersonAsync(PersonDto personDto);
         Task<bool> AddFriendAsync(long personId, long friendId);
         Task<IEnumerable<PersonDto>> GetFriendsAsync(long personId);
+        Task<bool> RemoveFriendAsync(long personId, long friendId);
 
     }
 }

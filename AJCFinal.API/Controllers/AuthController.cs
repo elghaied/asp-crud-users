@@ -24,9 +24,6 @@ namespace AJCFinal.API.Controllers
             {
                 return Unauthorized("Invalid email or password");
             }
-
-            // Here you would typically generate a JWT token
-            // For now, we'll just return the user
             return Ok(user);
         }
 
@@ -39,8 +36,11 @@ namespace AJCFinal.API.Controllers
                 HashedPassword = personInput.HashedPassword,
                 LastName = personInput.LastName,
                 FirstName = personInput.FirstName,
-                DateOfBirth = personInput.DateOfBirth
-
+                DateOfBirth = personInput.DateOfBirth,
+                Address = personInput.Address,
+                Phone = personInput.Phone,
+                Interests = personInput.Interests
+                
             });
 
             if (result)

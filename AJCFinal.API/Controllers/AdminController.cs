@@ -28,7 +28,10 @@ namespace AJCFinal.API.Controllers
                     HashedPassword = userInput.HashedPassword,
                     LastName = userInput.LastName,
                     FirstName = userInput.FirstName,
-                    DateOfBirth = userInput.DateOfBirth
+                    DateOfBirth = userInput.DateOfBirth,
+                    Address = userInput.Address,
+                    Phone = userInput.Phone,
+                    Interests = userInput.Interests
                 };
                 createdId = await this.adminService.CreateUserAsync(adminDto);
             }
@@ -40,7 +43,10 @@ namespace AJCFinal.API.Controllers
                     HashedPassword = userInput.HashedPassword,
                     LastName = userInput.LastName,
                     FirstName = userInput.FirstName,
-                    DateOfBirth = userInput.DateOfBirth
+                    DateOfBirth = userInput.DateOfBirth,
+                    Address = userInput.Address,
+                    Phone = userInput.Phone,
+                    Interests = userInput.Interests
                 };
                 createdId = await this.adminService.CreateUserAsync(personDto);
             }
@@ -68,18 +74,21 @@ namespace AJCFinal.API.Controllers
         }
 
         [HttpPut("{id:long}")]
-        public async Task<ActionResult> UpdateAsync(int id, [FromBody] AdminInput adminInput)
+        public async Task<ActionResult> UpdateAsync(int id, [FromBody] PersonInput personInput)
         {
-            if (id != adminInput.Id)
+            if (id != personInput.Id)
                 return BadRequest("Object id does not match.");
 
-            var updatedObjectId = await this.adminService.UpdateAdminAsync(new AdminDto
+            var updatedObjectId = await this.adminService.UpdateAdminAsync(new PersonDto
             {
-                Email = adminInput.Email,
-                HashedPassword = adminInput.HashedPassword,
-                LastName = adminInput.LastName,
-                FirstName = adminInput.FirstName,
-                DateOfBirth = adminInput.DateOfBirth
+                Email = personInput.Email,
+                HashedPassword = personInput.HashedPassword,
+                LastName = personInput.LastName,
+                FirstName = personInput.FirstName,
+                DateOfBirth = personInput.DateOfBirth,
+                Address = personInput.Address,
+                Phone = personInput.Phone,
+                Interests = personInput.Interests
             });
 
             return updatedObjectId > 0

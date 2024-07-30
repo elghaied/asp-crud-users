@@ -29,7 +29,11 @@ namespace AJCFinal.Business.Services
                     FirstName = admin.FirstName,
                     LastName = admin.LastName,
                     DateOfBirth = admin.DateOfBirth,
+                    Address = admin.Address,
+                    Phone = admin.Phone,
+                    Interests = admin.Interests,
                     IsAdmin = true
+
                 };
             }
 
@@ -43,6 +47,9 @@ namespace AJCFinal.Business.Services
                     FirstName = person.FirstName,
                     LastName = person.LastName,
                     DateOfBirth = person.DateOfBirth,
+                    Address = person.Address,
+                    Phone = person.Phone,
+                    Interests = person.Interests,
                     IsAdmin = false
                 };
             }
@@ -80,9 +87,13 @@ namespace AJCFinal.Business.Services
                     HashedPassword = hashedPassword,
                     FirstName = userDto.FirstName,
                     LastName = userDto.LastName,
-                    DateOfBirth = userDto.DateOfBirth
+                    DateOfBirth = userDto.DateOfBirth,
+                    Address = userDto.Address,
+                    Phone = userDto.Phone,
+                    Interests = userDto.Interests,
+
                 };
-                dbContext.Persons.Add(person);
+                this.dbContext.Persons.Add(person);
             
 
             return await dbContext.SaveChangesAsync() > 0;
