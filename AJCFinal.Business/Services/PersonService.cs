@@ -10,6 +10,8 @@ namespace AJCFinal.Business.Services
     internal sealed class PersonService : IPersonService
     {
         private readonly AjcFinalDbContext dbContext;
+        //private readonly BlobStorageService blobStorageService;
+
 
         public PersonService(AjcFinalDbContext dbContext)
         {
@@ -119,6 +121,7 @@ namespace AJCFinal.Business.Services
             return numberOfOperationsInDatabase > 0;
         }
 
+     
 
     }
 

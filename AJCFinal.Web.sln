@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AJCFinal", "AJCFinal\AJCFinal.csproj", "{189530E9-0353-4C87-BFB2-62775888B7DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AJCFinal", "AJCFinal\AJCFinal.csproj", "{189530E9-0353-4C87-BFB2-62775888B7DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Front", "Front", "{BEDA401D-1B85-45CE-941F-883E0481C459}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Back", "Back", "{FA62876F-58ED-42DB-A556-14169E0C28CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AJCFinal.DAL", "AJCFinal.DAL\AJCFinal.DAL.csproj", "{E1420734-DFBF-43A9-B742-7775AC789142}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AJCFinal.DAL", "AJCFinal.DAL\AJCFinal.DAL.csproj", "{E1420734-DFBF-43A9-B742-7775AC789142}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AJCFinal.Business", "AJCFinal.Business\AJCFinal.Business.csproj", "{B0B80F4A-2BEC-4F3F-8660-0857A2303FDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AJCFinal.Business", "AJCFinal.Business\AJCFinal.Business.csproj", "{B0B80F4A-2BEC-4F3F-8660-0857A2303FDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AJCFinal.API", "AJCFinal.API\AJCFinal.API.csproj", "{DB688E09-D040-4CBA-84FB-9516FED0C62E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AJCFinal.API", "AJCFinal.API\AJCFinal.API.csproj", "{DB688E09-D040-4CBA-84FB-9516FED0C62E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
