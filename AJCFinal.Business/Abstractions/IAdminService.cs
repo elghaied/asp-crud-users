@@ -11,7 +11,7 @@ namespace AJCFinal.Business.Abstractions
     {
         Task<AdminDto?> GetAdminByIdAsync(long id);
         Task<IEnumerable<AdminDto>> GetAllAdminsAsync();
-        Task<long> UpdateAdminAsync(AdminDto adminDto);
+        Task<long> UpdateAdminAsync(PersonDto personDto);
         //Task<bool> DeleteAdminAsync(long id);
         //Task<bool> AdminExistsAsync(string email);
         //Task<long> CreateAsync(AdminDto adminDto);

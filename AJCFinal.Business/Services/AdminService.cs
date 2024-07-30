@@ -27,17 +27,17 @@ namespace AJCFinal.Business.Services
             return await this.dbContext.Admins.Select(x => x.ToDto()).ToListAsync();
 
         }
-        public async Task<long> UpdateAdminAsync(AdminDto adminDto)
+        public async Task<long> UpdateAdminAsync(PersonDto personDto)
         {
-            var adminFound = await this.dbContext.Admins.FindAsync(adminDto.Id);
+            var adminFound = await this.dbContext.Admins.FindAsync(personDto.Id);
             if (adminFound is null)
                 return -1;
 
-            adminFound.Email = adminDto.Email;
-            adminFound.HashedPassword = adminDto.HashedPassword;
-            adminFound.LastName = adminDto.LastName;
-            adminFound.FirstName = adminDto.FirstName;
-            adminFound.DateOfBirth = adminDto.DateOfBirth;
+            adminFound.Email = personDto.Email;
+            adminFound.HashedPassword = personDto.HashedPassword;
+            adminFound.LastName = personDto.LastName;
+            adminFound.FirstName = personDto.FirstName;
+            adminFound.DateOfBirth = personDto.DateOfBirth;
 
             this.dbContext.Admins.Update(adminFound);
             var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();

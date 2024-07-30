@@ -19,7 +19,8 @@ namespace AJCFinal.Business.Extensions
                 HashedPassword = person.HashedPassword,
                 LastName = person.LastName,
                 FirstName = person.FirstName,
-                DateOfBirth = person.DateOfBirth
+                DateOfBirth = person.DateOfBirth,
+                FriendIds = person.Friends.Select(f => f.Id).ToList()
             };
         }
     }

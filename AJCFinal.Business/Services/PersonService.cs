@@ -72,21 +72,51 @@ namespace AJCFinal.Business.Services
 
         public async Task<bool> AddFriendAsync(long personId, long friendId)
         {
-            var foundPerson= await dbContext.Persons
-                                         .Include(p => p.Friends)
-                                         .FirstOrDefaultAsync(p => p.Id == personId);
-            var friend = await this.dbContext.Persons.FindAsync(friendId);
+            var person = await dbContext.Persons
+                .Include(p => p.Friends)
+                .FirstOrDefaultAsync(p => p.Id == personId);
 
-            if (foundPerson == null || friend == null || foundPerson.Friends.Any(f => f.Id == friendId))
+            var friend = await dbContext.Persons
+                .Include(p => p.Friends)
+                .FirstOrDefaultAsync(p => p.Id == friendId);
+
+            if (person == null || friend == null)
                 return false;
 
-            foundPerson.Friends.Add(friend);
-            var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
+            if (person.Friends.Any(f => f.Id == friendId) || friend.Friends.Any(f => f.Id == personId))
+                return false;
 
+            person.Friends.Add(friend);
+
+            friend.Friends.Add(person);
+
+            var numberOfOperationsInDatabase = await dbContext.SaveChangesAsync();
+            return numberOfOperationsInDatabase > 0;
+        }
+        public async Task<bool> RemoveFriendAsync(long personId, long friendId)
+        {
+            var person = await dbContext.Persons
+                .Include(p => p.Friends)
+                .FirstOrDefaultAsync(p => p.Id == personId);
+
+            var friend = await dbContext.Persons
+                .Include(p => p.Friends)
+                .FirstOrDefaultAsync(p => p.Id == friendId);
+
+            if (person == null || friend == null)
+                return false;
+
+            if (!person.Friends.Any(f => f.Id == friendId) && !friend.Friends.Any(f => f.Id == personId))
+                return false;
+
+            person.Friends = person.Friends.Where(f => f.Id != friendId).ToList();
+            friend.Friends = friend.Friends.Where(f => f.Id != personId).ToList();
+
+            var numberOfOperationsInDatabase = await dbContext.SaveChangesAsync();
             return numberOfOperationsInDatabase > 0;
         }
 
-       
+
     }
 
 }
