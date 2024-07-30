@@ -31,15 +31,15 @@ namespace AJCFinal.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserInput userInput)
+        public async Task<IActionResult> Register([FromBody] PersonInput personInput)
         {
-            var result = await authService.RegisterAsync(new AdminDto
+            var result = await authService.RegisterAsync(new PersonDto
             {
-                Email = userInput.Email,
-                HashedPassword = userInput.HashedPassword,
-                LastName = userInput.LastName,
-                FirstName = userInput.FirstName,
-                DateOfBirth = userInput.DateOfBirth
+                Email = personInput.Email,
+                HashedPassword = personInput.HashedPassword,
+                LastName = personInput.LastName,
+                FirstName = personInput.FirstName,
+                DateOfBirth = personInput.DateOfBirth
 
             });
 

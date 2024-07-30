@@ -60,20 +60,20 @@ namespace AJCFinal.Business.Services
 
             var hashedPassword = HashPassword(userDto.HashedPassword);
 
-            if (userDto.IsAdmin)
-            {
-                var admin = new Admin
-                {
-                    Email = userDto.Email,
-                    HashedPassword = hashedPassword,
-                    FirstName = userDto.FirstName,
-                    LastName = userDto.LastName,
-                    DateOfBirth = userDto.DateOfBirth
-                };
-                dbContext.Admins.Add(admin);
-            }
-            else
-            {
+            //if (userDto.IsAdmin)
+            //{
+            //    var admin = new Admin
+            //    {
+            //        Email = userDto.Email,
+            //        HashedPassword = hashedPassword,
+            //        FirstName = userDto.FirstName,
+            //        LastName = userDto.LastName,
+            //        DateOfBirth = userDto.DateOfBirth
+            //    };
+            //    dbContext.Admins.Add(admin);
+            //}
+            //else
+            
                 var person = new Person
                 {
                     Email = userDto.Email,
@@ -83,7 +83,7 @@ namespace AJCFinal.Business.Services
                     DateOfBirth = userDto.DateOfBirth
                 };
                 dbContext.Persons.Add(person);
-            }
+            
 
             return await dbContext.SaveChangesAsync() > 0;
         }
