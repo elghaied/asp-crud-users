@@ -1,0 +1,14 @@
+﻿@* Views/Shared/_Login.cshtml *@
+@if (User.Identity.IsAuthenticated)
+{
+    <a href="@Url.Action("Profile", "Persons", new { id = User.FindFirst("UserId")?.Value })" class="btn btn-outline-primary">My Profile</a>
+    
+    <form id="logoutForm" method="post" action="@Url.Action("Logout", "Auth")" class="form-inline">
+        <button type="submit" class="btn btn-outline-danger">Logout</button>
+    </form>
+}
+else
+{
+    <a href="@Url.Action("Login", "Auth")" class="btn btn-outline-primary">Login</a>
+    <a href="@Url.Action("Register", "Auth")" class="btn btn-outline-primary">Register</a>
+}

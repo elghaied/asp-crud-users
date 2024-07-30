@@ -1,0 +1,46 @@
+﻿@using AJCFinal.Models.Person
+@model PersonBaseViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="@Model.Image" class="img-fluid rounded-circle mb-3" alt="Profile Image">
+            <h2>@Model.FirstName @Model.LastName</h2>
+            <p><strong>Email:</strong> @Model.Email</p>
+            <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToString("d")</p>
+        </div>
+        <div class="col-md-8">
+            @if (User.Identity.IsAuthenticated && User.FindFirst("UserId")?.Value == Model.Id.ToString())
+            {
+                <a href="@Url.Action("EditProfile", "Persons", new { id = Model.Id })" class="btn btn-primary">Edit Profile</a>
+            }
+            else if (!Model.IsFriend)
+            {
+                <form method="post" action="@Url.Action("AddFriend", "Persons", new { friendId = Model.Id })">
+                    <button type="submit" class="btn btn-success">Add Friend</button>
+                </form>
+            }
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Friends</h3>
+            <div class="list-group">
+                @foreach (var friend in Model.Friends)
+                {
+                    <a href="@Url.Action("Profile", "Persons", new { id = friend.Id })" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@friend.FirstName @friend.LastName</h5>
+                        </div>
+                        <p class="mb-1">@friend.Email</p>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

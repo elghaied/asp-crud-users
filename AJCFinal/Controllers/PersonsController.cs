@@ -24,7 +24,7 @@ namespace AJCFinal.Controllers
 
             try
             {
-                var httpResponse = await this.httpClient.GetAsync("api/persons");
+                var httpResponse = await this.httpClient.GetAsync("api/Person");
 
                 if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
                     return Unauthorized();
@@ -33,6 +33,15 @@ namespace AJCFinal.Controllers
                     return View(new List<PersonBaseViewModel>());
 
                 personsFromApi = await httpResponse.Content.ReadFromJsonAsync<IEnumerable<PersonDto>>();
+
+                var userId = User.FindFirst("UserId")?.Value;
+
+                if (long.TryParse(userId, out long currentUserId))
+                {
+
+                    personsFromApi = personsFromApi.Where(p => p.Id != currentUserId).ToList();
+                }
+
             }
             catch (HttpRequestException)
             {
@@ -51,7 +60,7 @@ namespace AJCFinal.Controllers
         public async Task<IActionResult> Profile(int? id)
         {
    
-            var httpResponse = await this.httpClient.GetAsync($"api/persons/{id}");
+            var httpResponse = await this.httpClient.GetAsync($"api/Person/{id}");
 
             if (!httpResponse.IsSuccessStatusCode)
                 return NotFound();
@@ -72,24 +81,22 @@ namespace AJCFinal.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFriend(long friendId)
         {
-            var currentUserId = GetCurrentUserId();
-            if (currentUserId == null)
+            var userIdClaim = User.FindFirst("UserId");
+            if (userIdClaim == null)
             {
-                return RedirectToAction("Login", "Auth");
+                return Unauthorized();
             }
 
-            var httpResponse = await this.httpClient.PostAsync($"api/persons/{currentUserId}/friends/{friendId}", null);
+            var personId = long.Parse(userIdClaim.Value);
+            var response = await this.httpClient.PostAsync($"api/Person/AddFriend?personId={personId}&friendId={friendId}", null);
 
-            if (httpResponse.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                TempData["SuccessMessage"] = "Friend added successfully!";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Failed to add friend. Please try again later.";
+                return RedirectToAction("Profile", new { id = friendId });
             }
 
-            return RedirectToAction(nameof(Index));
+            // Handle failure to add friend appropriately
+            return BadRequest("Failed to add friend.");
         }
 
         private string GetCurrentUserId()

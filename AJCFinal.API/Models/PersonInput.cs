@@ -3,6 +3,6 @@
     public class PersonInput : UserInput
     {
         
-        public IEnumerable<long> FriendIds { get; set; } = new List<long>();
+        public IEnumerable<long>? FriendIds { get; set; } = new List<long>();
     }
 }

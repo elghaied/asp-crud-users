@@ -29,6 +29,9 @@ namespace AJCFinal.Models.Person
         public DateTime DateOfBirth { get; set; }
 
         [Display(Name ="Profile Image")]
-        public IFormFile? Image { get; set; }
+        public IFormFile? Image { get; set; } = null;
+
+        public IEnumerable<long> FriendIds { get; set; } = new List<long>();
+        public bool? IsAdmin { get; set; } = false;
     }
 }

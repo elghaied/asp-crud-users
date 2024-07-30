@@ -18,7 +18,7 @@ namespace AJCFinal.Models.Person
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
 
-        public List<PersonBaseViewModel> Friends { get; set; }
+        public List<PersonBaseViewModel> Friends { get; set; } = new List<PersonBaseViewModel>();
 
         [Display(Name ="Profile Image")]
         public string Image {  get; set; } = string.Empty;
