@@ -39,7 +39,7 @@ namespace AJCFinal.DAL
                         j.ToTable("Friendships");
                     });
 
-            
+
         }
     }
 }

@@ -11,7 +11,7 @@ namespace AJCFinal.DAL.Entites
         public long Id { get; set; }
 
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         [StringLength(255)]
         public string Email { get; set; }
 
@@ -30,5 +30,14 @@ namespace AJCFinal.DAL.Entites
         [Required]
         [Column(TypeName = "date")]
         public DateTime DateOfBirth { get; set; }
+        
+        [StringLength(255)]
+        public string? Address { get; set; }
+
+        [StringLength(10)]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must be exactly 10 digits.")]
+        public string? Phone { get; set; }
+        [StringLength(255)]
+        public string? Interests { get; set; }
     }
 }

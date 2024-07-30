@@ -10,6 +10,18 @@ namespace AJCFinal.DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Persons_Persons_PersonId",
+                table: "Persons");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Persons_PersonId",
+                table: "Persons");
+
+            migrationBuilder.DropColumn(
+                name: "PersonId",
+                table: "Persons");
+
             migrationBuilder.CreateTable(
                 name: "Friendships",
                 columns: table => new
@@ -45,6 +57,24 @@ namespace AJCFinal.DAL.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Friendships");
+
+            migrationBuilder.AddColumn<long>(
+                name: "PersonId",
+                table: "Persons",
+                type: "bigint",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Persons_PersonId",
+                table: "Persons",
+                column: "PersonId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Persons_Persons_PersonId",
+                table: "Persons",
+                column: "PersonId",
+                principalTable: "Persons",
+                principalColumn: "Id");
         }
     }
 }

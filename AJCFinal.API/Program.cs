@@ -1,5 +1,6 @@
 using AJCFinal.DAL;
 using Microsoft.EntityFrameworkCore;
+using AJCFinal.Business.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<AjcFinalDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("AjcFinalDbContext"))
     
     );
+builder.Services.AddBusiness();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
