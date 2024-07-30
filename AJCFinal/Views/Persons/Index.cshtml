@@ -1,0 +1,42 @@
+﻿@using AJCFinal.Models.Person
+@model IEnumerable<PersonBaseViewModel>
+@{
+    ViewData["Title"] = "All People";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var person in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(person.Image))
+                    {
+                        <img src="@person.Image" class="card-img-top" alt="@person.FirstName @person.LastName">
+                    }
+                    else
+                    {
+
+                        <img src="\Resources\Images\Default_pfp.jpg" class="card-img-top" alt="Default Profile">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@person.FirstName @person.LastName</h5>
+                        @if (!person.IsFriend)
+                        {
+                            <form asp-controller="Person" asp-action="AddFriend" method="post">
+                                <input type="hidden" name="friendId" value="@person.Id" />
+                                <button type="submit" class="btn btn-primary">Add as Friend</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary" disabled>Already Friends</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
