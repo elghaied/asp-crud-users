@@ -1,5 +1,6 @@
 ﻿@using AJCFinal.Models.Person
 @model IEnumerable<PersonBaseViewModel>
+
 @{
     ViewData["Title"] = "All People";
 }
@@ -19,38 +20,41 @@
         @foreach (var person in Model)
         {
             <div class="col">
-                <div class="card h-100">
+                <div class="card h-100 align-items-center">
                     @if (!string.IsNullOrEmpty(person.Image))
                     {
-                        <img src="@Url.Content(person.Image)" class="card-img-top" alt="@person.FirstName @person.LastName">
+                        <img src="@Url.Content(person.Image)" class="card-img-top w-50" alt="@person.FirstName @person.LastName">
                     }
                     else
                     {
-                        <img src="@Url.Content("~/images/Default_pfp.jpg")" class="card-img-top" alt="Default Profile">
+                        <img src="@Url.Content("~/images/Default_pfp.jpg")" class="card-img-top w-50" alt="Default Profile">
                     }
                     <div class="card-body">
                         <h5 class="card-title">@person.FirstName @person.LastName</h5>
-                        @if (User.Identity.IsAuthenticated && User.FindFirst("UserId")?.Value != person.Id.ToString())
-                        {
-                            @if (!person.IsFriend)
+                        <div class="d-flex flex-column">
+                            <a href="@Url.Action("Profile", "Persons", new { id = person.Id })" class="btn btn-info mb-2">See Profile</a>
+                            @if (User.Identity.IsAuthenticated && User.FindFirst("UserId")?.Value != person.Id.ToString())
                             {
-                                <form asp-controller="Persons" asp-action="AddFriend" method="post">
-                                    <input type="hidden" name="friendId" value="@person.Id" />
-                                    <button type="submit" class="btn btn-primary">Add as Friend</button>
-                                </form>
+                                @if (!person.IsFriend)
+                                {
+                                    <form asp-controller="Persons" asp-action="AddFriend" method="post">
+                                        <input type="hidden" name="friendId" value="@person.Id" />
+                                        <button type="submit" class="btn btn-primary mb-2">Add as Friend</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-controller="Persons" asp-action="RemoveFriend" method="post">
+                                        <input type="hidden" name="friendId" value="@person.Id" />
+                                        <button type="submit" class="btn btn-danger mb-2">Remove Friend</button>
+                                    </form>
+                                }
                             }
-                            else
+                            else if (User.Identity.IsAuthenticated && User.FindFirst("UserId")?.Value == person.Id.ToString())
                             {
-                                <form asp-controller="Persons" asp-action="RemoveFriend" method="post">
-                                    <input type="hidden" name="friendId" value="@person.Id" />
-                                    <button type="submit" class="btn btn-danger">Remove Friend</button>
-                                </form>
+                                <span class="text-muted">This is you</span>
                             }
-                        }
-                        else if (User.Identity.IsAuthenticated && User.FindFirst("UserId")?.Value == person.Id.ToString())
-                        {
-                            <span class="text-muted">This is you</span>
-                        }
+                        </div>
                     </div>
                 </div>
             </div>

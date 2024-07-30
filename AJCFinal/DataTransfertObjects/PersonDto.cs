@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using AJCFinal.Models.Person;
 
 namespace AJCFinal.DataTransfertObjects
 {
@@ -22,6 +23,8 @@ namespace AJCFinal.DataTransfertObjects
  
         public DateTime DateOfBirth { get; set; }
 
-        public List<PersonDto> Friends { get; set; }
+        public List<PersonBaseViewModel> Friends { get; set; } = new List<PersonBaseViewModel>();
+
+        public IEnumerable<long>? FriendIds { get; set; } = new List<long>();
     }
 }

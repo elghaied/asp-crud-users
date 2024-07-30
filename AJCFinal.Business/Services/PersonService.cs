@@ -40,8 +40,9 @@ namespace AJCFinal.Business.Services
                                          .FirstOrDefaultAsync(p => p.Id == personId);
             if (person == null)
                 return Enumerable.Empty<PersonDto>();
-
-            return person.Friends.Select(f => f.ToDto()).ToList();
+            var friends = person.Friends ?? Enumerable.Empty<Person>();
+            var friendsToDo = friends.Select(f => f.ToDto()).ToList();
+            return friendsToDo;
         }
 
         public async Task<long> UpdatePersonAsync(PersonDto personDto)

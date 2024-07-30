@@ -38,25 +38,19 @@ namespace AJCFinal.Controllers
                 {
                     personsFromApi = personsFromApi.Where(p => p.Id != currentUserId).ToList();
 
-                    // Get the current user's friends using the new endpoint
-                    var friendsResponse = await this.httpClient.GetAsync($"api/Person/{currentUserId}/friends");
-                    if (friendsResponse.IsSuccessStatusCode)
-                    {
-                        friendsFromApi = await friendsResponse.Content.ReadFromJsonAsync<IEnumerable<PersonDto>>();
-                    }
                 }
             }
             catch (HttpRequestException)
             {
                 personsFromApi = await this.personService.GetPersonsAsync();
-                // If there's an exception, we'll assume the user has no friends to avoid additional exceptions
+             
                 friendsFromApi = new List<PersonDto>();
             }
 
             var personsVm = personsFromApi?.Select(personDto =>
             {
                 var vm = PersonBaseViewModel.FromDto(personDto);
-                vm.IsFriend = friendsFromApi.Any(f => f.Id == personDto.Id);
+                vm.IsFriend = personDto.FriendIds.Contains(currentUserId);
                 return vm;
             }) ?? new List<PersonBaseViewModel>();
 
@@ -65,52 +59,54 @@ namespace AJCFinal.Controllers
 
         public async Task<IActionResult> Profile(int? id)
         {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
             var httpResponse = await this.httpClient.GetAsync($"api/Person/{id}");
             if (!httpResponse.IsSuccessStatusCode)
+            {
                 return NotFound();
+            }
+
             var personFromApi = await httpResponse.Content.ReadFromJsonAsync<PersonDto>();
-            var vm = PersonBaseViewModel.FromDto(personFromApi ?? new PersonDto());
+            if (personFromApi == null)
+            {
+                return NotFound();
+            }
+
+            var vm = PersonBaseViewModel.FromDto(personFromApi);
 
             // Check if the viewed profile is a friend of the current user
             var userId = User.FindFirst("UserId")?.Value;
             if (long.TryParse(userId, out long currentUserId))
             {
-                var friendsResponse = await this.httpClient.GetAsync($"api/Person/{currentUserId}/friends");
-                if (friendsResponse.IsSuccessStatusCode)
-                {
-                    var friendsFromApi = await friendsResponse.Content.ReadFromJsonAsync<IEnumerable<PersonDto>>();
-                    vm.IsFriend = friendsFromApi.Any(f => f.Id == vm.Id);
-                }
+                vm.IsFriend = personFromApi.FriendIds.Contains(currentUserId);
             }
 
+            foreach (var friendId in personFromApi.FriendIds)
+            {
+                var friendHttpResponse = await this.httpClient.GetAsync($"api/Person/{friendId}");
+                var friendFromApi = await friendHttpResponse.Content.ReadFromJsonAsync<PersonDto>();
+                var friend = PersonBaseViewModel.FromDto(friendFromApi);
+                if (friend != null)
+                    vm.Friends.Add(friend);
+
+            }
+   
+
+            // Fetch the person's profile image
             httpResponse = await this.httpClient.GetAsync($"api/files/{vm.FirstName}-thumbs");
             if (httpResponse.IsSuccessStatusCode)
             {
                 vm.Image = await httpResponse.Content.ReadAsStringAsync();
             }
+
             return View(vm);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddFriend(long friendId)
-        //{
-        //    var userIdClaim = User.FindFirst("UserId");
-        //    if (userIdClaim == null)
-        //    {
-        //        return Unauthorized();
-        //    }
 
-        //    var personId = long.Parse(userIdClaim.Value);
-        //    var response = await this.httpClient.PostAsync($"api/Person/AddFriend?personId={personId}&friendId={friendId}", null);
-
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        return RedirectToAction("Profile", new { id = friendId });
-        //    }
-
-        //    // Handle failure to add friend appropriately
-        //    return BadRequest("Failed to add friend.");
-        //}
 
         private string GetCurrentUserId()
         {
@@ -140,7 +136,7 @@ namespace AJCFinal.Controllers
         public async Task<IActionResult> RemoveFriend(long friendId)
         {
             var currentUserId = long.Parse(User.FindFirst("UserId").Value);
-            var response = await httpClient.PostAsync($"api/Persons/RemoveFriend?personId={currentUserId}&friendId={friendId}", null);
+            var response = await httpClient.PostAsync($"api/Person/RemoveFriend?personId={currentUserId}&friendId={friendId}", null);
 
             if (response.IsSuccessStatusCode)
             {

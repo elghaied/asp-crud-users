@@ -39,5 +39,7 @@ namespace AJCFinal.DAL.Entites
         public string? Phone { get; set; }
         [StringLength(255)]
         public string? Interests { get; set; }
+
+     
     }
 }

@@ -17,6 +17,7 @@ namespace AJCFinal.Models.Person
 
         [Display(Name = "Date of birth")]
         public DateTime DateOfBirth { get; set; }
+        public IEnumerable<long>? FriendIds { get; set; } = new List<long>();
 
         public List<PersonBaseViewModel> Friends { get; set; } = new List<PersonBaseViewModel>();
 
@@ -33,7 +34,8 @@ namespace AJCFinal.Models.Person
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 DateOfBirth = person.DateOfBirth,
-
+                FriendIds = person.FriendIds,
+                Friends = person.Friends
             };
         }
     }

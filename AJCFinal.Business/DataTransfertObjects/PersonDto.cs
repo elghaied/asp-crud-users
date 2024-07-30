@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AJCFinal.DAL.Entites;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace AJCFinal.Business.DataTransfertObjects
 {
     public sealed class PersonDto : UserDto
     {
-        
+
         public IEnumerable<long> FriendIds { get; set; }
+
+ 
     }
 }

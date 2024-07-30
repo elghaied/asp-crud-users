@@ -23,7 +23,9 @@ namespace AJCFinal.Business.Extensions
                 Address = person.Address,
                 Phone = person.Phone,
                 Interests = person.Interests,  
-                FriendIds = person.Friends.Select(f => f.Id).ToList()
+                FriendIds = person.Friends.Select(f => f.Id).ToList(),
+              
+
             };
         }
     }

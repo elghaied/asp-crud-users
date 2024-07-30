@@ -1,52 +1,40 @@
 ﻿@using AJCFinal.Models.Person
 @model PersonBaseViewModel
+
 @{
     ViewData["Title"] = "Profile";
 }
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
-<div class="container mt-4">
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="container">
     <div class="row">
-        <div class="col-md-4">
-            @if(Model.Image == null || Model.Image == "")
+        <div class="col-4">
+            @if (!string.IsNullOrEmpty(Model.Image))
             {
-                <img src="~/images/Default_pfp.jpg" class="img-fluid rounded-circle mb-3" alt="Profile Image">
-            }else
-            {
-                <img src="@Model.Image" class="img-fluid rounded-circle mb-3" alt="Profile Image">
+                <img src="@Url.Content(Model.Image)" class="img-fluid" alt="@Model.FirstName @Model.LastName">
             }
-       
-            <h2>@Model.FirstName @Model.LastName</h2>
-            <p><strong>Email:</strong> @Model.Email</p>
-            <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToString("d")</p>
+            else
+            {
+                <img src="@Url.Content("~/images/Default_pfp.jpg")" class="img-fluid" alt="Default Profile">
+            }
         </div>
-        <div class="col-md-8">
-            @if (User.Identity.IsAuthenticated && User.FindFirst("UserId")?.Value == Model.Id.ToString())
+        <div class="col-8">
+            <h3>@Model.FirstName @Model.LastName</h3>
+            <p>@Model.Email</p>
+            @if (User.Identity.IsAuthenticated && !Model.IsFriend)
             {
-                <a href="@Url.Action("EditProfile", "Persons", new { id = Model.Id })" class="btn btn-primary">Edit Profile</a>
+                <form asp-controller="Persons" asp-action="AddFriend" method="post">
+                    <input type="hidden" name="friendId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary">Add as Friend</button>
+                </form>
             }
-            else if (User.Identity.IsAuthenticated)
+            @if (User.Identity.IsAuthenticated && Model.IsFriend)
             {
-                @if (Model.IsFriend)
-                {
-                    <form method="post" action="@Url.Action("RemoveFriend", "Persons")">
-                        <input type="hidden" name="friendId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-danger">Remove Friend</button>
-                    </form>
-                }
-                else
-                {
-                    <form method="post" action="@Url.Action("AddFriend", "Persons")">
-                        <input type="hidden" name="friendId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-success">Add Friend</button>
-                    </form>
-                }
+                <form asp-controller="Persons" asp-action="RemoveFriend" method="post">
+                    <input type="hidden" name="friendId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-danger">Remove Friend</button>
+                </form>
             }
         </div>
     </div>
@@ -61,6 +49,13 @@
                             <h5 class="mb-1">@friend.FirstName @friend.LastName</h5>
                         </div>
                         <p class="mb-1">@friend.Email</p>
+                        @if (!friend.IsFriend)
+                        {
+                            <form asp-controller="Persons" asp-action="AddFriend" method="post" class="d-inline">
+                                <input type="hidden" name="friendId" value="@friend.Id" />
+                                <button type="submit" class="btn btn-primary btn-sm">Add as Friend</button>
+                            </form>
+                        }
                     </a>
                 }
             </div>
