@@ -28,7 +28,10 @@ namespace AJCFinal.API.Controllers
                     HashedPassword = userInput.HashedPassword,
                     LastName = userInput.LastName,
                     FirstName = userInput.FirstName,
-                    DateOfBirth = userInput.DateOfBirth
+                    DateOfBirth = userInput.DateOfBirth,
+                    Address = userInput.Address,
+                    Phone = userInput.Phone,
+                    Interests = userInput.Interests
                 };
                 createdId = await this.adminService.CreateUserAsync(adminDto);
             }
@@ -40,7 +43,10 @@ namespace AJCFinal.API.Controllers
                     HashedPassword = userInput.HashedPassword,
                     LastName = userInput.LastName,
                     FirstName = userInput.FirstName,
-                    DateOfBirth = userInput.DateOfBirth
+                    DateOfBirth = userInput.DateOfBirth,
+                    Address = userInput.Address,
+                    Phone = userInput.Phone,
+                    Interests = userInput.Interests
                 };
                 createdId = await this.adminService.CreateUserAsync(personDto);
             }
@@ -79,7 +85,10 @@ namespace AJCFinal.API.Controllers
                 HashedPassword = personInput.HashedPassword,
                 LastName = personInput.LastName,
                 FirstName = personInput.FirstName,
-                DateOfBirth = personInput.DateOfBirth
+                DateOfBirth = personInput.DateOfBirth,
+                Address = personInput.Address,
+                Phone = personInput.Phone,
+                Interests = personInput.Interests
             });
 
             return updatedObjectId > 0

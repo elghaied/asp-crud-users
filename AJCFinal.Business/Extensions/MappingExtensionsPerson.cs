@@ -20,6 +20,9 @@ namespace AJCFinal.Business.Extensions
                 LastName = person.LastName,
                 FirstName = person.FirstName,
                 DateOfBirth = person.DateOfBirth,
+                Address = person.Address,
+                Phone = person.Phone,
+                Interests = person.Interests,  
                 FriendIds = person.Friends.Select(f => f.Id).ToList()
             };
         }

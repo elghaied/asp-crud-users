@@ -19,7 +19,10 @@ namespace AJCFinal.Business.Extensions
                 HashedPassword = admin.HashedPassword,
                 LastName = admin.LastName,
                 FirstName = admin.FirstName,
-                DateOfBirth = admin.DateOfBirth
+                DateOfBirth = admin.DateOfBirth,
+                Address = admin.Address,
+                Phone = admin.Phone,
+                Interests = admin.Interests
             };
         }
     }

@@ -52,7 +52,10 @@ namespace AJCFinal.Business.Services
             foundPerson.LastName = personDto.LastName;
             foundPerson.FirstName = personDto.FirstName;
             foundPerson.DateOfBirth = personDto.DateOfBirth;
-
+            foundPerson.Address = personDto.Address;
+            foundPerson.Phone = personDto.Phone;
+            foundPerson.Interests = personDto.Interests;
+            
             this.dbContext.Persons.Update(foundPerson);
             var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
 
