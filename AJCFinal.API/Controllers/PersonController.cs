@@ -81,5 +81,12 @@ namespace AJCFinal.API.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("{id}/friends")]
+        public async Task<IActionResult> GetFriends(long id)
+        {
+            var friends = await this.personService.GetFriendsAsync(id);
+            return Ok(friends);
+        }
     }
 }

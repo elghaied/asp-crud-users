@@ -3,8 +3,16 @@
 @{
     ViewData["Title"] = "All People";
 }
-
 <h2>@ViewData["Title"]</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
 
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -14,25 +22,34 @@
                 <div class="card h-100">
                     @if (!string.IsNullOrEmpty(person.Image))
                     {
-                        <img src="@person.Image" class="card-img-top" alt="@person.FirstName @person.LastName">
+                        <img src="@Url.Content(person.Image)" class="card-img-top" alt="@person.FirstName @person.LastName">
                     }
                     else
                     {
-
-                        <img src="\Resources\Images\Default_pfp.jpg" class="card-img-top" alt="Default Profile">
+                        <img src="@Url.Content("~/images/Default_pfp.jpg")" class="card-img-top" alt="Default Profile">
                     }
                     <div class="card-body">
                         <h5 class="card-title">@person.FirstName @person.LastName</h5>
-                        @if (!person.IsFriend)
+                        @if (User.Identity.IsAuthenticated && User.FindFirst("UserId")?.Value != person.Id.ToString())
                         {
-                            <form asp-controller="Person" asp-action="AddFriend" method="post">
-                                <input type="hidden" name="friendId" value="@person.Id" />
-                                <button type="submit" class="btn btn-primary">Add as Friend</button>
-                            </form>
+                            @if (!person.IsFriend)
+                            {
+                                <form asp-controller="Persons" asp-action="AddFriend" method="post">
+                                    <input type="hidden" name="friendId" value="@person.Id" />
+                                    <button type="submit" class="btn btn-primary">Add as Friend</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-controller="Persons" asp-action="RemoveFriend" method="post">
+                                    <input type="hidden" name="friendId" value="@person.Id" />
+                                    <button type="submit" class="btn btn-danger">Remove Friend</button>
+                                </form>
+                            }
                         }
-                        else
+                        else if (User.Identity.IsAuthenticated && User.FindFirst("UserId")?.Value == person.Id.ToString())
                         {
-                            <button class="btn btn-secondary" disabled>Already Friends</button>
+                            <span class="text-muted">This is you</span>
                         }
                     </div>
                 </div>

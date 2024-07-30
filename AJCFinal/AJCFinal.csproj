@@ -14,11 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\Default_pfp.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\Images\Default_pfp.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Images\Default_pfp.jpg" />
+    <Resource Include="wwwroot\images\Default_pfp.jpg" />
   </ItemGroup>
 
 </Project>
