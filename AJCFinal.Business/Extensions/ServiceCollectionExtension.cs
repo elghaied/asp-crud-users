@@ -11,6 +11,8 @@ namespace AJCFinal.Business.Extensions
             services.AddTransient<IPersonService, PersonService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IFileService, FileService>();
+
 
             return services;
         }
