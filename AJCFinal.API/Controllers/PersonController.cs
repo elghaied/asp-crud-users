@@ -71,5 +71,15 @@ namespace AJCFinal.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("RemoveFriend")]
+        public async Task<IActionResult> RemoveFriendAsync(long personId, long friendId)
+        {
+            var result = await this.personService.RemoveFriendAsync(personId, friendId);
+            if (!result)
+                return BadRequest("Failed to remove friend.");
+
+            return NoContent();
+        }
     }
 }
