@@ -1,0 +1,23 @@
+﻿@model AJCFinal.Models.Person.PersonInputViewModel
+
+
+@{
+	ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this user?</h3>
+<div>
+	<h4>Pizza</h4>
+	<hr />
+
+	<partial Name="_DetailsPartial" Model="@Model" />
+
+	<form asp-action="Delete">
+		<input type="hidden" asp-for="FirstName" />
+		<input type="hidden" asp-for="LastName" />
+		<input type="submit" value="Delete" class="btn btn-danger" /> |
+		<a asp-action="Index">Back to List</a>
+	</form>
+</div>

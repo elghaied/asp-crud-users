@@ -1,0 +1,38 @@
+﻿@using AJCFinal.Models.Person
+@model IEnumerable<PersonBaseViewModel>
+
+@{
+    ViewData["Title"] = "Liste des Utilisateurs";
+}
+
+<h2>Liste des Utilisateurs</h2>
+
+<p>
+    <a asp-controller="Admins"  asp-action="Create" class="btn btn-primary">Create a new user</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+           
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.LastName</td>
+                <td>@user.FirstName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-info btn-sm">Détails</a>
+                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Modifier</a>
+                    <a asp-action="Delete"  asp-route-id="@user.Id" class="btn btn-danger btn-sm">Supprimer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
