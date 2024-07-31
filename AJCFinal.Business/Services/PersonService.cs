@@ -51,7 +51,6 @@ namespace AJCFinal.Business.Services
             if (foundPerson is null) return -1;
 
             foundPerson.Email = personDto.Email;
-            foundPerson.HashedPassword = personDto.HashedPassword;
             foundPerson.LastName = personDto.LastName;
             foundPerson.FirstName = personDto.FirstName;
             foundPerson.DateOfBirth = personDto.DateOfBirth;

@@ -1,12 +1,10 @@
 ﻿@using AJCFinal.Models.Person
 @model PersonBaseViewModel
-
 @{
     ViewData["Title"] = "Profile";
+    var currentUserId = User.FindFirst("UserId")?.Value;
 }
-
 <h2>@ViewData["Title"]</h2>
-
 <div class="container">
     <div class="row">
         <div class="col-4">
@@ -22,19 +20,27 @@
         <div class="col-8">
             <h3>@Model.FirstName @Model.LastName</h3>
             <p>@Model.Email</p>
-            @if (User.Identity.IsAuthenticated && !Model.IsFriend)
+            @if (User.Identity.IsAuthenticated)
             {
-                <form asp-controller="Persons" asp-action="AddFriend" method="post">
-                    <input type="hidden" name="friendId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-primary">Add as Friend</button>
-                </form>
-            }
-            @if (User.Identity.IsAuthenticated && Model.IsFriend)
-            {
-                <form asp-controller="Persons" asp-action="RemoveFriend" method="post">
-                    <input type="hidden" name="friendId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-danger">Remove Friend</button>
-                </form>
+                @if (currentUserId == Model.Id.ToString())
+                {
+                    <a asp-controller="Persons" asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary">Edit Profile</a>
+
+                }
+                else if (!Model.IsFriend)
+                {
+                    <form asp-controller="Persons" asp-action="AddFriend" method="post">
+                        <input type="hidden" name="friendId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-primary">Add as Friend</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="Persons" asp-action="RemoveFriend" method="post">
+                        <input type="hidden" name="friendId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-danger">Remove Friend</button>
+                    </form>
+                }
             }
         </div>
     </div>
@@ -49,7 +55,7 @@
                             <h5 class="mb-1">@friend.FirstName @friend.LastName</h5>
                         </div>
                         <p class="mb-1">@friend.Email</p>
-                        @if (!friend.IsFriend)
+                        @if (!friend.IsFriend && currentUserId != friend.Id.ToString())
                         {
                             <form asp-controller="Persons" asp-action="AddFriend" method="post" class="d-inline">
                                 <input type="hidden" name="friendId" value="@friend.Id" />

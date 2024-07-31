@@ -117,4 +117,47 @@ public class AuthController : Controller
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
+
+
+    [HttpGet("change-password")]
+    public IActionResult ChangePassword()
+    {
+        return View(new PasswordViewModel());
+    }
+
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword(PasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var userId = User.FindFirst("UserId")?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Forbid();
+        }
+
+        var changePasswordInput = new
+        {
+            UserId = long.Parse(userId),
+            OldPassword = model.OldPassword,
+            NewPassword = model.NewPassword
+        };
+
+        var jsonContent = JsonSerializer.Serialize(changePasswordInput);
+        var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+        var response = await httpClient.PostAsync("api/Auth/change-password", httpContent);
+
+        if (response.IsSuccessStatusCode)
+        {
+            ViewData["SuccessMessage"] = "Password changed successfully";
+            return View("ChangePasswordConfirmation");
+        }
+
+        ModelState.AddModelError(string.Empty, "Failed to change password");
+        return View(model);
+    }
 }

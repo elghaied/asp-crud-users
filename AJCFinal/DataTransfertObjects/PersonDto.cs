@@ -23,6 +23,10 @@ namespace AJCFinal.DataTransfertObjects
  
         public DateTime DateOfBirth { get; set; }
 
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
+        public string? Interests { get; set; }
+
         public List<PersonBaseViewModel> Friends { get; set; } = new List<PersonBaseViewModel>();
 
         public IEnumerable<long>? FriendIds { get; set; } = new List<long>();

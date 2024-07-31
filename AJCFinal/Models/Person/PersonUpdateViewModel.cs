@@ -2,19 +2,16 @@
 
 namespace AJCFinal.Models.Person
 {
-    public class PersonInputViewModel
+    public class PersonUpdateViewModel
     {
+
         [Required(ErrorMessage = "Email field is missing!!")]
         [EmailAddress(ErrorMessage = "Please provide an email ex: name@domain.ext")]
         [StringLength(255)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is missing !!")]
-        [StringLength(255)]
-        public string Password { get; set; }
-
         [Required(ErrorMessage = "Last Name is missing !!!")]
-        [Display(Name ="Last Name")]
+        [Display(Name = "Last Name")]
         [StringLength(100)]
         public string LastName { get; set; }
 
@@ -28,7 +25,7 @@ namespace AJCFinal.Models.Person
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
-        [Display(Name ="Profile Image")]
+        [Display(Name = "Profile Image")]
         public IFormFile? Image { get; set; } = null;
 
         public IEnumerable<long> FriendIds { get; set; } = new List<long>();

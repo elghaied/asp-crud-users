@@ -45,9 +45,7 @@ namespace AJCFinal.API.Controllers
             var updatedObjectId = await this.personService.UpdatePersonAsync(new PersonDto
             {
                 Id = id,
-                Email = personInput.Email,
-                //A changer
-                HashedPassword = personInput.HashedPassword,
+                Email = personInput.Email, 
                 LastName = personInput.LastName,
                 FirstName = personInput.FirstName,
                 DateOfBirth = personInput.DateOfBirth,

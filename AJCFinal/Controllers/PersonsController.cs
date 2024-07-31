@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Json;
+using System.Text;
 
 namespace AJCFinal.Controllers
 {
@@ -107,6 +109,75 @@ namespace AJCFinal.Controllers
         }
 
 
+        [HttpGet]
+        public async Task<IActionResult> Update(long id)
+        {
+            var response = await this.httpClient.GetAsync($"api/Person/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var person = await response.Content.ReadFromJsonAsync<PersonUpdateViewModel>();
+                return View(person);
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                ModelState.AddModelError(string.Empty, $"Error fetching profile. Server response: {errorContent}");
+                return View();
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(long id, PersonUpdateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userId = User.FindFirst("UserId")?.Value;
+            if (string.IsNullOrEmpty(userId) || long.Parse(userId) != id)
+            {
+                return Forbid();
+            }
+
+            var personInput = new
+            {
+                Id = id,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth,
+                Address = model.Address,
+                Phone = model.Phone,
+                Interests = model.Interests,
+           // Has to be reomved from here 
+            };
+
+            var httpContent = new StringContent(JsonSerializer.Serialize(personInput), Encoding.UTF8, "application/json");
+            var response = await httpClient.PutAsync($"api/Person/{id}", httpContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (model.Image != null)
+                {
+                    await using var memoryStream = new MemoryStream();
+                    await model.Image.CopyToAsync(memoryStream);
+                    await this.httpClient.PostAsJsonAsync("api/Files", new
+                    {
+                        Name = model.Email,
+                        Content = Convert.ToBase64String(memoryStream.ToArray()),
+                        ContentType = model.Image.ContentType
+                    });
+                }
+                return RedirectToAction(nameof(Profile), new { id = id });
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                ModelState.AddModelError(string.Empty, $"Profile update failed. Server response: {errorContent}");
+            }
+
+            return View(model);
+        }
 
         private string GetCurrentUserId()
         {
